@@ -1,0 +1,67 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 15px 7%;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logo {
+  width: 80px;
+  cursor: pointer;
+}
+
+ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 30px;
+  flex: 1;
+  justify-content: center;
+}
+
+ul li {
+  font-size: 25px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.search_box {
+  display: flex;
+  align-items: center;
+  background: #242424;
+  padding: 8px 15px;
+  border-radius: 30px;
+}
+
+.search_box input {
+  padding: 6px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+  max-width: 200px;
+}
+
+.search_box img {
+  width: 20px;
+  margin-left: 10px;
+  filter: invert(1); /* icon trắng nếu gốc là đen */
+  cursor: pointer;
+}
+
+.toggle_icon {
+  width: 30px;
+  cursor: pointer;
+}
+.login{
+  font-size: 20px;
+  font-weight: 10px;
+  cursor: pointer;
+}

@@ -1,0 +1,40 @@
+.containerBanner {
+  height: 400px;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: 10px;
+   justify-content: center; /* căn giữa ngang */
+  align-items: center; 
+}
+.contentBox{
+  flex-direction: column;
+  padding: 60px 0;
+  text-align: center;
+  
+}
+.title{
+  font-size: 28px;
+  color: #000;
+  font-weight: bold;
+  
+}
+h1{
+  font-weight: 100;
+}
+input[type="button"],
+button {
+  border-radius: 30px;
+  cursor: pointer;
+  background-color: #eee;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover,
+button:hover {
+  background-color: #333;
+  color: white;
+}
