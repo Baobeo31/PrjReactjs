@@ -1,62 +1,49 @@
 import styles from './SignUp.module.css'
-import user_icon from '../../components/assets/person.png';
-import password_icon from '../../components/assets/password.png';
-import email_icon from '../../components/assets/email.png';
+import user_icon from '../../components/assets/person.png'
+import password_icon from '../../components/assets/password.png'
+import email_icon from '../../components/assets/email.png'
 import { useState, useEffect } from 'react'
-import classNames from 'classnames';
 import { useMutationHooks } from '../../hook/useMutation'
 import { signupUser } from '../../services/UserService'
 import { useNavigate } from 'react-router-dom'
-import * as UserService from '../../services/UserService'
 
 function SignUp() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [action, setAction] = useState('Sign Up');
+  // const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [action, setAction] = useState('Sign Up')
 
-  const mutation = useMutationHooks(
-    data => UserService.signupUser(data)
-  )
-  const { data, isError, isSuccess } = mutation;
-  const navigate = useNavigate();
-
-  // Dùng các hàm riêng để xử lý thay đổi input
-  const handleOnChangeEmail = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleOnChangePassWord = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleOnChangeConfirmPassword = (e) => {
-    setConfirmPassword(e.target.value);
-  };
+  const mutation = useMutationHooks(signupUser)
+  const { data, isError, isSuccess } = mutation
+  const navigate = useNavigate()
 
   const handleSignUp = (e) => {
-    e.preventDefault(); // Ngăn reload trang
-    mutation.mutate({
-      email,
-      password,
-      confirmPassword,
-    });
-  };
+    e.preventDefault()
+
+    if (password !== confirmPassword) {
+      setErrorMessage('Mật khẩu xác nhận không khớp.')
+      return
+    }
+
+    setErrorMessage('')
+    mutation.mutate({ email, password })
+  }
 
   const handleNavigateSignIn = () => {
-    navigate('/login');
-  };
+    navigate('/login')
+  }
 
   useEffect(() => {
     if (isSuccess) {
-      alert('Success');
-      handleNavigateSignIn();
+      alert('Đăng ký thành công!')
+      handleNavigateSignIn()
     } else if (isError) {
-      alert('Error');
-      console.log(mutation.error);
-
+      alert('Đăng ký thất bại!')
+      console.error('Lỗi:', mutation.error)
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError])
 
   return (
     <div>
@@ -67,13 +54,24 @@ function SignUp() {
         </div>
 
         <form className={styles.inputs} onSubmit={handleSignUp}>
+          {/* <div className={styles.input}>
+            <img className={styles.img} src={user_icon} alt="name" />
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div> */}
+
           <div className={styles.input}>
             <img className={styles.img} src={email_icon} alt="email" />
             <input
               type="email"
               placeholder="Email"
               value={email}
-              onChange={handleOnChangeEmail}
+              onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
               required
             />
@@ -85,7 +83,7 @@ function SignUp() {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={handleOnChangePassWord}
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
               required
             />
@@ -97,10 +95,20 @@ function SignUp() {
               type="password"
               placeholder="Confirm Password"
               value={confirmPassword}
-              onChange={handleOnChangeConfirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               autoComplete="new-password"
               required
             />
+          </div>
+
+          {errorMessage && (
+            <div style={{ color: 'red', textAlign: 'center', marginBottom: 8 }}>
+              {errorMessage}
+            </div>
+          )}
+
+          <div className={styles.forgotpassword}>
+            Lost Password? <span onClick={() => navigate('/forgot-pass')}>Click here</span>
           </div>
 
           <div className={styles.submitcontainer}>
@@ -114,7 +122,7 @@ function SignUp() {
         </form>
       </div>
     </div>
-  );
+  )
 }
 
-export default SignUp;
+export default SignUp
