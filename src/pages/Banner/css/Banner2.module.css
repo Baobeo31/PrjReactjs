@@ -1,0 +1,61 @@
+.shop {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  gap: 20px
+}
+.shop-container {
+  display: flex;
+  justify-content: space-between; /* giãn đều các item */
+  gap: 20px; /* khoảng cách giữa các phần tử */
+  padding: 0 20px; /* sát lề trái phải */
+}
+
+.shop_img {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(16, 10, 192, 0.85); /* đỏ đẹp + có độ mờ */
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  z-index: 1;
+}
+.shop_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease; /* để khi hover phóng to */
+}
+
+.shop_body {
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 30px;
+  width: 100%;
+  height: 100%;
+  background: rgba(227, 233, 247, 0.8); /* 👈 dùng overlay trong suốt màu xám nhạt */
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: background 0.3s;
+  z-index: 1;
+  gap: 20%;
+}
+
+.shop:hover .shop_img img {
+  transform: scale(1.1);
+}
+.section{
+  margin-top: 60px;
+}

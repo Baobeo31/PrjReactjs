@@ -1,0 +1,32 @@
+.checkbox_filter{
+  padding: 10px;
+  margin-right: 20px;
+}
+.input_checkbox{
+  padding: 5px;
+  font-size: 20px;
+  margin-right: 40px;
+}
+.aside_title{
+  margin-left: 10px;
+}
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #244dbe; /* màu xanh hoặc tuỳ bạn */
+  cursor: pointer;
+  margin-right: 10px;
+}
+label{
+  font-size: 20px;
+}
+input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #244dbe; /* màu xanh hoặc tuỳ bạn */
+  cursor: pointer;
+  margin-right: 10px;
+}
+.radio{
+  margin-left: 20px;
+}

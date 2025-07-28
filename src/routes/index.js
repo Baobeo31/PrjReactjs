@@ -5,6 +5,8 @@ import Login from "../pages/SignIn/SignIn";
 import SignUp from "../pages/SignUp/SignUp";
 import Verify from "../pages/ForgotPassword/verify";
 import ForgotPassword from "../pages/ForgotPassword/forgotPasssword";
+import ProductPage from "../pages/Product/ProductPage";
+import ProductDetail from "../pages/ProductDetail/ProductDetail";
 
 export const routes = [
   {
@@ -36,7 +38,18 @@ export const routes = [
         path: "verify-otp",
         element: <Verify />,
         isShowHeader: false
+      },
+      {
+        path: "product",
+        element: <ProductPage />,
+        isShowHeader: false
+      },
+      {
+        path: "detail",
+        element: <ProductDetail />,
+        isShowHeaderL: false
       }
+
     ]
   },
 

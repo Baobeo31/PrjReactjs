@@ -19,21 +19,20 @@
   margin-top:30px;
 }
 .text{
-  color: #3c009d;
+  color: #000;
   font-size: 48px;
   font-weight: 700;
 }
 .underline{
   width: 100px;
   height: 10px;
-  background: #3c009d;
+  background: #000;
   border-radius: 9px;
 }
 .inputs{
   margin-top: 55px;
   display: flex;
   flex-direction: column;
-  gap:20px;
 }
 .input{
   display: flex;
@@ -65,13 +64,13 @@
   font-size: 19px;
 }
 .forgotpassword span{
-  color: #4c00b4;
+  color: #000;
   cursor: pointer;
 }
 .submitcontainer{
   display: flex;
   gap: 30px;
-  margin: 60px auto;
+  margin: 30px auto;
 }
 .submit{
   display: flex;
@@ -80,7 +79,7 @@
   width: 220px;
   height: 55px;
   color:#fff;
-  background: #4c00b4;
+  background: #000;
   border-radius: 50px;
   font-size: 19px;
   font-weight: 700;

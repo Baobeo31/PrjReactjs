@@ -103,10 +103,6 @@ function SignUp() {
             />
           </div>
 
-          <div className={styles.forgotpassword}>
-            Lost Password? <span>Click here</span>
-          </div>
-
           <div className={styles.submitcontainer}>
             <button type="button" className={styles.submit} onClick={handleNavigateSignIn}>
               Log In
