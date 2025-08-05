@@ -8,7 +8,7 @@ import { signupUser } from '../../services/UserService'
 import { useNavigate } from 'react-router-dom'
 
 function SignUp() {
-  // const [name, setName] = useState('')
+  const [username, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -28,7 +28,7 @@ function SignUp() {
     }
 
     setErrorMessage('')
-    mutation.mutate({ email, password })
+    mutation.mutate({ email, password, username, confirmPassword })
   }
 
   const handleNavigateSignIn = () => {
@@ -37,13 +37,18 @@ function SignUp() {
 
   useEffect(() => {
     if (isSuccess) {
-      alert('Đăng ký thành công!')
-      handleNavigateSignIn()
+      if (data?.status === 'OK') {
+        alert('Đăng ký thành công!')
+        handleNavigateSignIn()
+      } else if (data?.status === 'Err') {
+        setErrorMessage(data?.message || 'Đăng ký thất bại!')
+      }
     } else if (isError) {
-      alert('Đăng ký thất bại!')
+      setErrorMessage('Lỗi kết nối server!')
       console.error('Lỗi:', mutation.error)
     }
-  }, [isSuccess, isError])
+  }, [isSuccess, isError, data])
+
 
   return (
     <div>
@@ -54,16 +59,16 @@ function SignUp() {
         </div>
 
         <form className={styles.inputs} onSubmit={handleSignUp}>
-          {/* <div className={styles.input}>
+          <div className={styles.input}>
             <img className={styles.img} src={user_icon} alt="name" />
             <input
               type="text"
               placeholder="Name"
-              value={name}
+              value={username}
               onChange={(e) => setName(e.target.value)}
               required
             />
-          </div> */}
+          </div>
 
           <div className={styles.input}>
             <img className={styles.img} src={email_icon} alt="email" />
@@ -106,11 +111,6 @@ function SignUp() {
               {errorMessage}
             </div>
           )}
-
-          <div className={styles.forgotpassword}>
-            Lost Password? <span onClick={() => navigate('/forgot-pass')}>Click here</span>
-          </div>
-
           <div className={styles.submitcontainer}>
             <button type="button" className={styles.submit} onClick={handleNavigateSignIn}>
               Log In

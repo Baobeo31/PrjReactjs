@@ -1,7 +1,7 @@
 import styles from './forgot.module.css'
 import password_icon from '../../components/assets/password.png';
 import email_icon from '../../components/assets/email.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutationHooks } from '../../hook/useMutation';
 import { verifyOTPAndResetPassword } from '../../services/UserService';
@@ -15,28 +15,24 @@ function Verify() {
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
   const mutation = useMutationHooks(verifyOTPAndResetPassword)
+  const { data, isError, isLoading, isSuccess } = mutation
 
-  const handleVeriry = () => {
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
     mutation.mutate({
       email,
       otp,
       newPassword
     })
-  }
-  const handleResetPassword = async (e) => {
-    e.preventDefault();
 
-    // if (newPassword !== confirm) {
-    //   return setError("Mật khẩu xác nhận không khớp.");
-    // }
-
-    // Gọi API xác thực OTP và đổi mật khẩu
-    console.log("Xác thực:", { email, otp, newPassword });
-
-    // Nếu thành công:
-    alert("Đặt lại mật khẩu thành công");
-    navigate('/login');
   };
+  useEffect(() => {
+    if (data?.status === "OK") {
+      navigate('/login')
+    } else {
+      alert("Không thành công")
+    }
+  }, [data])
 
   return (
     <div className={styles.container}>

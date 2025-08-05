@@ -1,6 +1,6 @@
 import styles from './forgot.module.css'
 import email_icon from '../../components/assets/email.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutationHooks } from '../../hook/useMutation';
 import { sendOTP } from '../../services/UserService';
@@ -9,18 +9,22 @@ function ForgotPassword() {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
   const mutation = useMutationHooks(sendOTP)
-  const handleOTP = () => {
-    mutation.mutate(email)
-  }
+  const { data, isLoading, isError, error } = mutation
+
   const handleSendOTP = async (e) => {
     e.preventDefault();
 
-    // Gọi API gửi OTP ở đây
-    console.log("Gửi OTP tới email:", email);
+    mutation.mutate(email)
 
-    // Chuyển sang trang nhập mã OTP, truyền email
-    navigate('/verify-otp');
   };
+  useEffect(() => {
+    if (mutation.isSuccess && data?.status === "OK") {
+      navigate('/verify-otp', { state: { email } });
+    } else if (mutation.isError || (mutation.isSuccess && data?.status !== "OK")) {
+      alert(data?.message || "Gửi mã OTP thất bại");
+    }
+  }, [data, mutation.isSuccess, mutation.isError, navigate, email]);
+
 
   return (
     <div className={styles.container}>
@@ -43,7 +47,7 @@ function ForgotPassword() {
         </div>
 
         <div className={styles.submitcontainer}>
-          <button type="submit" className={styles.submit} onClick={handleOTP}>Gửi mã OTP</button>
+          <button type="submit" className={styles.submit}>Gửi mã OTP</button>
         </div>
       </form>
     </div>

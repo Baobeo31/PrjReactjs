@@ -30,7 +30,7 @@ export const routes = [
         isShowHeader: false
       },
       {
-        path: "forgot-pass",
+        path: "sendOTP",
         element: <ForgotPassword />,
         isShowHeader: false
       },
@@ -45,7 +45,7 @@ export const routes = [
         isShowHeader: false
       },
       {
-        path: "detail",
+        path: "product-detail/:id",
         element: <ProductDetail />,
         isShowHeaderL: false
       }

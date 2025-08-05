@@ -69,10 +69,39 @@
 
 .product_img {
   position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.product_img > img {
+.product_img  img {
+   width: 100%;
+  height: auto;
+  transition: filter 0.3s ease;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  font-weight: bold;
+  font-size: 16px;
+  transition: opacity 0.3s ease;
+}
+
+/* Khi hover: làm mờ ảnh và hiện overlay */
+.product_img:hover img {
+  filter: blur(2px);
+}
+
+.product_img:hover .overlay {
+  opacity: 1;
 }
 
 .product_label {

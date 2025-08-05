@@ -14,15 +14,20 @@ function Login() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  
 
   const mutation = useMutationHooks(loginUser);
-  const { data, isSuccess, isError, error, isLoading } = mutation;
-
+  const { data, isSuccess, isError, error, isLoading } = mutation; 
   useEffect(() => {
-    if (isSuccess) {
-      navigate('/home')
+    if (isSuccess && data?.status === 'OK') {
+      localStorage.setItem('isLoggedIn', 'true');
+      navigate('/home');
+    } else if (isSuccess && data?.status === 'Error') {
+      alert(data?.message || 'Đăng nhập thất bại');
+    } else if (isError) {
+      alert(error?.response?.data?.message || 'Đăng nhập thất bại');
     }
-  }, [isSuccess, data, location, navigate]);
+  }, [data, isSuccess, isError, error, navigate]);
 
   const handleOnChangeEmail = (value) => {
     setEmail(value);
@@ -44,7 +49,7 @@ function Login() {
   };
 
   const handleNavigateForgot = () => {
-    navigate('/forgot-pass');
+    navigate('/sendOTP');
   };
 
   return (
