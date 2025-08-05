@@ -60,7 +60,7 @@ const getAllProduct = (limit, page, sort, filter) => {
       let filterOption = {};
 
       if (filter?.categories && Array.isArray(filter.categories) && filter.categories.length > 0) {
-        filterOption.category = { $in: filter.categories };
+        filterOption.category = { $in: filter.categories }; 
       }
 
       if (filter?.brands && Array.isArray(filter.brands) && filter.brands.length > 0) {
@@ -96,7 +96,7 @@ const getAllProduct = (limit, page, sort, filter) => {
         } else if (max !== undefined) {
           filterOption.price = { $lte: max };
         }
-      }
+      } 
 
       const total = await Product.countDocuments(filterOption);
       console.log(filterOption);

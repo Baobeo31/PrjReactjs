@@ -1,40 +1,35 @@
 const ProductService = require('../services/ProductService');
-
-const createProduct = async (req, res) => {
+const AppError = require('../utils/AppError')
+const createProduct = async (req, res, next) => {
   try {
     const { name, brand, rating, description, image, countInStock, price, discountPrice } = req.body;
     console.log(req.body);
 
     if (!name || !brand || !rating || !description || !image || !countInStock || !price || !discountPrice) {
-      return res.status(200).json({
-        status: 'Error',
-        message: 'Vui lòng nhập đầy đủ thông tin sản phẩm'
-      });
+      return next(new AppError("Vui lòng nhập đầy đủ", 400))
     }
     const newProduct = await ProductService.createProduct(req.body);
-    console.log(newProduct);
 
-    return res.status(200).json(newProduct);
-  } catch (error) {
-    return res.status(404).json({
-      message: error.message
+    return res.status(201).json({
+      success: true,
+      data, newProduct
     });
+  } catch (error) {
+    next(error)
   }
 }
 
-const getAllProducts = async (req, res) => {
+const getAllProducts = async (req, res, next) => {
   try {
     const { limit, page, sort, filter } = req.query;
 
-    // ✅ Parse filter nếu là JSON string
+
     let parsedFilter = {};
     if (typeof filter === 'string') {
       try {
         parsedFilter = JSON.parse(filter);
       } catch (e) {
-        return res.status(400).json({
-          message: 'Filter không hợp lệ (không parse được)',
-        });
+        return next(new AppError("Không parse được filter", 400))
       }
     }
 
@@ -47,67 +42,50 @@ const getAllProducts = async (req, res) => {
 
     return res.status(200).json(response);
   } catch (error) {
-    return res.status(500).json({
-      message: 'Lỗi server: ' + error.message
-    });
+    next(error)
   }
 };
 
 
-const getDetailProduct = async (req, res) => {
+const getDetailProduct = async (req, res, next) => {
   try {
     const productId = req.params.id;
     console.log(productId);
 
     if (!productId) {
-      return resolve({
-        status: 'ERROR',
-        message: 'Không thấy productID '
-      })
+      return next(new AppError("Không tìm thấy Id sản phẩm", 400))
     }
     const detailProduct = await ProductService.getDetailProduct(productId)
     return res.status(200).json(detailProduct)
   } catch (error) {
-    return res.status(404).json({
-      message: error.message
-    })
+    next(error)
   }
 }
 
-const updateProduct = async (req, res) => {
+const updateProduct = async (req, res, next) => {
   try {
     const productId = req.params.id;
     const data = req.body;
     if (!productId) {
-      return res.status(400).json({
-        status: 'ERROR',
-        message: 'Không thấy productID'
-      });
+      return next(new AppError("Không tìm thấy id Sản phẩm", 400))
     }
     const updateProduct = await ProductService.updateProduct(productId, data);
     return res.status(200).json(updateProduct);
   } catch (error) {
-    return res.status(404).json({
-      message: error.message
-    });
+    next(error)
   }
 }
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res, next) => {
   try {
     const productId = req.params.id;
     if (!productId) {
-      return res.status(400).json({
-        status: 'ERROR',
-        message: 'Không thấy productID'
-      });
+      return next(new AppError("Không tìm thấy Id sản phẩm", 300))
     }
     const deleteResponse = await ProductService.deleteProduct(productId);
     return res.status(200).json(deleteResponse);
   } catch (error) {
-    return res.status(404).json({
-      message: error.message
-    });
+    next(error)
   }
 }
 

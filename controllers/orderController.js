@@ -1,87 +1,65 @@
 const OrderService = require('../services/OrderService');
-
-const createOrder = async (req, res) => {
+const AppError = require('../utils/AppError')
+const createOrder = async (req, res, next) => {
   try {
     const { paymethod, itemsPrice, shippingPrice, totalPrice, fullname, address, city, phone, user } = req.body;
     if (!paymethod || !itemsPrice || !shippingPrice || !totalPrice || !fullname || !address || !city || !phone || !user) {
-      return res.status(400).json({
-        status: 'ERROR',
-        message: 'Vui lòng nhập đầy đủ thông tin đơn hàng'
-      });
+      return next(new AppError("Vui lồng nhập đầy đủ thông tin đơn", 400))
     }
     const response = await OrderService.createOrder(req.body);
     return res.status(200).json(response);
 
   } catch (error) {
-    return res.status(404).json({
-      message: error.message
-    });
+    next(error)
   }
 }
 
-const getAllOrderDetail = async (req, res) => {
+const getAllOrderDetail = async (req, res, next) => {
   try {
     const userId = req.params.id;
     if (!userId) {
-      return res.status(400).json({
-        status: 'ERROR',
-        message: 'Không thấy ID người dùng'
-      });
+      return next(new AppError('Không tìm thấy Id người dùng', 400))
     }
     const response = await OrderService.getALlOrderDetail(userId);
     return res.status(200).json(response);
   } catch (error) {
-    return res.status(404).json({
-      message: error.message
-    });
+    next(error)
   }
 }
 
-const getOrderDetail = async (req, res) => {
+const getOrderDetail = async (req, res, next) => {
   try {
     const orderId = req.params.id;
     if (!orderId) {
-      return res.status(400).json({
-        status: 'ERROR',
-        message: 'Không thấy ID đơn hàng'
-      });
+      return next(new AppError('Không tìm thấy Id đơn hàng', 400))
     }
     const response = await OrderService.getOrderDetail(orderId);
     return res.status(200).json(response);
   } catch (error) {
-    return res.status(404).json({
-      message: error.message
-    });
+    next(error)
   }
 }
 
-const cancelOrder = async (req, res) => {
+const cancelOrder = async (req, res, next) => {
   try {
     const orderId = req.params.id;
     const data = req.body.orderItems;
     if (!orderId) {
-      return res.status(400).json({
-        status: 'ERROR',
-        message: 'Không thấy ID đơn hàng'
-      });
+      return next(new AppError('Không tìm thấy Id đơn hàng', 400))
     }
     const response = await OrderService.cancelOrder(orderId, data);
     return res.status(200).json(response);
 
   } catch (error) {
-    return res.status(404).json({
-      message: error.message
-    });
+    next(error)
   }
 }
-const getAllOrders = async (req, res) => {
+const getAllOrders = async (req, res, next) => {
   try {
     const response = await OrderService.getAllOrders();
     return res.status(200).json(response);
   } catch (error) {
-    return res.status(404).json({
-      message: error.message
-    });
+    next(error)
   }
 }
 module.exports = {

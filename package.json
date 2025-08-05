@@ -17,13 +17,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon App.js",
-    "dev": "nodemon App.js"
+    "start": "cross-env NODE_ENV=production nodemon App.js",
+    "dev": "cross-env NODE_ENV=development nodemon App.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "cross-env": "^10.0.0",
     "nodemon": "^3.1.10"
   }
 }
