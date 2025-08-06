@@ -1,58 +1,41 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const AppError = require('../utils/AppError')
 dotenv.config();
 
 
-const authMiddleWare = (req, res, next) => { // Dùng chỉ admin mới có quyền truy cập vào các route này
+const verifyToken = (req, res, next) => {
   const authHeader = req.headers.token;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({
-      status: 'ERROR',
-      message: 'Unauthorized'
-    });
+    return next(new AppError("Unauthorized", 400))
   }
-  const token = authHeader.split(' ')[1];
-  jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
-    if (err) {
-      return res.status(403).json({
-        status: 'ERROR',
-        message: 'Ivalid token'
-      });
-    }
-    if (user?.isAdmin) {
-      next();
+  try {
+    const token = authHeader.replace('Bearer ', '').trim()
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN)
+    req.user = decoded
+    next()
+  } catch (error) {
+    return next(new AppError('Token không hợp lệ hoặc đã hết hạn ', 400))
+  }
+
+}
+
+const authMiddleWare = (req, res, next) => { // Dùng chỉ admin mới có quyền truy cập vào các route này
+  verifyToken(req, res, () => {
+    if (req.user?.isAdmin) {
+      next()
     } else {
-      return res.status(401).json({
-        status: 'ERROR',
-        message: 'Access denied'
-      });
+      return next(new AppError("Access denied", 400))
     }
   })
 }
 const authUserMiddleware = (req, res, next) => { // Dùng cho các route mà chỉ cần đăng nhập là có quyền truy cập
-  const authHeader = req.headers.token;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({
-      status: 'ERROR',
-      message: 'Unauthorized'
-    });
-  }
-  const token = authHeader.split(' ')[1];
-  const userId = req.params.id;
-  jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
-    if (err) {
-      return res.status(403).json({
-        status: 'ERROR',
-        message: 'Ivalid token'
-      });
-    }
-    if (user?.isAdmin || user?.id === userId) {
+  verifyToken(req, res, () => {
+    const userId = req.params.id
+    if (req.user?.isAdmin || req.user?.id === userId) {
       next()
     } else {
-      return res.status(401).json({
-        status: 'ERROR',
-        message: 'Access denied'
-      });
+      return next(new AppError("Access denied", 400))
     }
   })
 }
