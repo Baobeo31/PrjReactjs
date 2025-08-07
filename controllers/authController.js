@@ -10,14 +10,15 @@ const createUser = async (req, res, next) => {
     if (!email || !password || !confirmPassword) {
       return next(new AppError("Vui lòng nhập đầy đủ thông tin", 400))
     }
-    else if (!validator.isEmail(email)) {
+    if (!validator.isEmail(email)) {
       return next(new AppError("Email không hợp lệ", 400))
-    } else if (!passwordStrength(password)) {
-      return next(new AppError("Mật khẩu quá yếu. Dùng ít nhất 8 ký tự, gồm chữ hoa, số và ký tự đặc biệt", 400))
     }
-    else if (password != confirmPassword) {
+    passwordStrength(password)
+    if (password != confirmPassword) {
       return next(new AppError("Mật khẩu không giống nhau", 400))
     }
+
+
     const response = await UserService.createUser(req.body);
     return res.status(200).json(response)
   } catch (error) {
@@ -30,6 +31,7 @@ const googleCallback = async (req, res) => {
     const tokens = await UserService.loginWithGoogle(user)
 
     return res.redirect(`${process.env.CLIENT_URL}/login/success?access_token=${tokens.access_token}&refresh_token=${tokens.refresh_token}`)
+    //gửi token về FE
   } catch (error) {
     return res.redirect(`${process.env.CLIENT_URL}/login/failed`)
   }
@@ -120,9 +122,7 @@ const verifyOTP = async (req, res, next) => {
     else if (!validator.isEmail(email)) {
       return next(new AppError("Vui lòng nhập đúng kí tự", 400))
     }
-    else if (!passwordStrength(newPassword)) {
-      return next(new AppError("Vui lòng tạo mật khẩu gồm 8 kí tự, gồm chữ hoa, số và ký tự đặc biệt", 400))
-    }
+    passwordStrength(newPassword)
     const result = await UserService.verifyOTPandResetPass(email, otp, newPassword)
     console.log(result);
 

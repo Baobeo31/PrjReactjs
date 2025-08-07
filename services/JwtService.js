@@ -6,7 +6,7 @@ dotenv.config()
 const generalAccessToken = async (payload) => {
   const access_token = jwt.sign({
     ...payload
-  }, process.env.ACCESS_TOKEN, { expiresIn: '5p' })
+  }, process.env.ACCESS_TOKEN, { expiresIn: '5m' })
   return access_token
 }
 //Tạo 1 refresh_token có thời gian lâu lưu trong trình duyệt để cấp lại access_token mới khi hết hạn

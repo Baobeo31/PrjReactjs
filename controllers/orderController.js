@@ -56,7 +56,7 @@ const cancelOrder = async (req, res, next) => {
 }
 const getAllOrders = async (req, res, next) => {
   try {
-    const response = await OrderService.getAllOrders();
+    const response = await OrderService.getAllOrder();
     return res.status(200).json(response);
   } catch (error) {
     next(error)

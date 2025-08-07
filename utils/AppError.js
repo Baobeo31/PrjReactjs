@@ -1,4 +1,4 @@
-class AppError extends Error {
+class AppError extends Error { // refactor hàm Error
   constructor(message, statusCode) {
     super(message)
     this.statusCode = statusCode

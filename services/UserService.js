@@ -64,12 +64,12 @@ const loginUser = async ({ email, password }) => {
     throw new AppError('Sai mật khẩu', 400);
   }
 
-  const access_token = generalAccessToken({
+  const access_token = await generalAccessToken({
     id: checkUser.id,
     isAdmin: checkUser.isAdmin,
   });
 
-  const refresh_token = generalRefreshToken({
+  const refresh_token = await generalRefreshToken({
     id: checkUser.id,
     isAdmin: checkUser.isAdmin,
   });

@@ -2,17 +2,28 @@ const ProductService = require('../services/ProductService');
 const AppError = require('../utils/AppError')
 const createProduct = async (req, res, next) => {
   try {
-    const { name, brand, rating, description, image, countInStock, price, discountPrice } = req.body;
-    console.log(req.body);
+    const { name, brand, rating, description, countInStock, price, discountPrice, category } = req.body;
+    const image = req.file?.path // ảnh từ CLoudinary
+    console.log('Body:', req.body);  // Log dữ liệu text
+    console.log('File:', req.file);
 
-    if (!name || !brand || !rating || !description || !image || !countInStock || !price || !discountPrice) {
+    if (!name || !brand || !rating || !description || !image || !countInStock || !price || !discountPrice || !category) {
       return next(new AppError("Vui lòng nhập đầy đủ", 400))
     }
-    const newProduct = await ProductService.createProduct(req.body);
+    const newProduct = await ProductService.createProduct({
+      name,
+      brand,
+      rating,
+      description,
+      image,
+      countInStock,
+      price,
+      discountPrice,
+    });
 
     return res.status(201).json({
       success: true,
-      data, newProduct
+      data: newProduct
     });
   } catch (error) {
     next(error)

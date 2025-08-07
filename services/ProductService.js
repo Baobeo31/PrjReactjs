@@ -1,7 +1,7 @@
 const Product = require('../models/Product')
 const AppError = require('../utils/AppError')
 const createProduct = async (newProduct) => {
-  const { name, brand, rating, description, image, countInStock, price, discountPrice } = newProduct
+  const { name, brand, rating, description, image, countInStock, price, discountPrice, category } = newProduct
   const checkProduct = await Product.findOne({ name })
   if (checkProduct) {
     throw new AppError("Sản phẩm này đã có ", 400)
@@ -14,7 +14,8 @@ const createProduct = async (newProduct) => {
     image,
     countInStock: Number(countInStock),
     price,
-    discountPrice: Number(discountPrice)
+    discountPrice: Number(discountPrice),
+    category
   })
 
   return {
