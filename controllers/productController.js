@@ -19,6 +19,7 @@ const createProduct = async (req, res, next) => {
       countInStock,
       price,
       discountPrice,
+      category
     });
 
     return res.status(201).json({
