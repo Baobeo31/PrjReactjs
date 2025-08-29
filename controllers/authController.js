@@ -53,7 +53,7 @@ const loginUser = async (req, res, next) => {
     const { refresh_token, ...newResponse } = response;
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "produ   ction",
       sameSite: "strict",
     });
     return res.status(200).json(newResponse)
